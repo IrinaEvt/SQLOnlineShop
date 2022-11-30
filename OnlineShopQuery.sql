@@ -90,8 +90,15 @@ Products on CustomerProduct.ProductId = Products.Id
 left join
 Categories on Products.Fk_Category = Categories.Id;
 
-SELECT 
+select top 3
     Name,
-    Quantity
-FROM Products 
-WHERE Quantity = ( SELECT MAX(Quantity) FROM Products );
+	count(ProductId) as 'Orders count'
+from Products
+left join 
+CustomerProduct on Products.Id = CustomerProduct.ProductId
+left join
+Customers on CustomerProduct.CustomerId = Customers.Id
+group by Products.Name
+order by count(ProductId)
+desc
+;
